@@ -1,0 +1,39 @@
+#!/bin/bash
+
+#### This script will rename the EPrime data aid TEXT file to "subj_num".txt 
+# Define the root directory
+root_dir="/Volumes/LaCie/BIRC_behavioral_Data/data/reward-card behavioral"
+
+# Check if the root directory exists
+if [[ ! -d "$root_dir" ]]; then
+  echo "Directory $root_dir does not exist!"
+  exit 1
+fi
+
+# Loop through each subdirectory in the root directory
+for sub_dir in "$root_dir"/*/; do
+  # Remove trailing slash
+  sub_dir=${sub_dir%/}
+  
+  # Get the subdirectory name
+  sub_dir_name=$(basename "$sub_dir")
+  
+  # Find the .txt file in the subdirectory
+  txt_file=$(find "$sub_dir" -maxdepth 1 -name "*.txt" -print -quit)
+  
+  # Check if a .txt file was found
+  if [[ -n "$txt_file" ]]; then
+    # Define the new filename using the subdirectory name
+    new_filename="${sub_dir_name}.txt"
+    
+    # Copy and rename the .txt file
+    cp "$txt_file" "$root_dir/$new_filename"
+    
+    echo "Copied $txt_file to $root_dir/$new_filename"
+  else
+    echo "No .txt file found in $sub_dir"
+  fi
+done
+
+echo "Processing completed."
+
