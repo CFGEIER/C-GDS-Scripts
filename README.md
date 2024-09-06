@@ -1,0 +1,1 @@
+This repository contains various scripts related to fMRI data processing, data wrangling, etc. Some (most?) of the scripts have directory paths that are hard coded - you will want to change these after downloading to work on your computer. 
