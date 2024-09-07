@@ -1,0 +1,38 @@
+import pandas as pd
+
+# File path
+file_path = '/mnt/data/008.txt'
+blank_onset_times = []
+procedures = []
+
+# Reading the file with correct encoding
+with open(file_path, 'r', encoding='latin1') as file:
+    for line in file:
+        if "Blank.OnsetTime:" in line:
+            onset_time = line.split("Blank.OnsetTime:")[1].strip()
+            blank_onset_times.append(onset_time)
+        if "Procedure:" in line:
+            procedure = line.split("Procedure:")[1].strip().split()[0]  # Extracting the first word after "Procedure:"
+            if "roc" in procedure and "Parrot" not in procedure:
+                procedures.append(procedure)
+
+# Ensuring both lists have the same length
+min_length = min(len(blank_onset_times), len(procedures))
+blank_onset_times = blank_onset_times[:min_length]
+procedures = procedures[:min_length]
+
+# Creating a table with the results
+df = pd.DataFrame({
+    "Blank_OnsetTime": blank_onset_times,
+    "Procedure": procedures
+})
+
+import ace_tools as tools; tools.display_dataframe_to_user(name="Combined Procedure and Onset Time Table", dataframe=df)
+
+# Writing the table to a CSV file
+output_csv_file = '/mnt/data/008_output.csv'
+df.to_csv(output_csv_file, index=False)
+
+print(f"Table successfully written to {output_csv_file}")
+
+
