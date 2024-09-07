@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Define the list of participants and data files
+participants=("s833" "s837" "s845" "s859" "s864" "s867" "s868" "s882" "s883" "s890" "s894" "s895" "s899" "s901" "s948" "s997" "s1008" "s801" "s814" "s815" "s857" "s893" "s932" "s942" "s990" "s823" "s831" "s834" "s848" "s849" "s858" "s860" "s878" "s879" "s884" "s918" "s931" "s936" "s939" "s951" "s996" "s998" )
+
+# Add your participants here
+input_dir="/Users/charlesgeier/Downloads/archive_subj/group"          # Set the path to your data files directory
+output_dir="/Users/charlesgeier/Downloads/archive_subj/group"       # Set the path to your output directory
+
+# Create the output directory if it doesn't exist
+mkdir -p "$output_dir"
+
+# Loop over each participant
+for subj in "${participants[@]}"; do
+    # Define the input file for this participant
+    input_file="${input_dir}/stats.${subj}_REML+tlrc.BRIK"
+    
+    # Define the output file for this participant
+    output_file="${output_dir}/${subj}_FWHMx.txt"
+
+    # Run 3dFWHMx on the input file and save the output - *** UPDATE: USE -ACF ******
+    3dFWHMx -input "$input_file" > "$output_file" -acf 
+
+    echo "Processed $subj: output saved to $output_file"
+done
+
+echo "All participants processed."
+
